@@ -1,0 +1,2 @@
+Asteroid Resource 1:1
+ColumnResource 8:1
