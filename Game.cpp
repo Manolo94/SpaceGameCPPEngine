@@ -178,4 +178,12 @@ void Game::Render()
 {
 	if(!Game::GetInit()) return;
 	Game::GetMainCamera()->Render();
+
+	// TODO: Implement a UI system
+	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT), 
+					al_map_rgb(255, 255, 255), 300, 100, 0, "Right click to use thruster");
+	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(255, 255, 255), 300, 120, 0, "Get close to asteroids and left click on them to attach rocket");
+	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(255, 255, 255), 300, 140, 0, "Esc for menu");
 };

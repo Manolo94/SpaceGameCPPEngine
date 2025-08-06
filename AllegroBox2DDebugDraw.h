@@ -1,10 +1,8 @@
 #pragma once
 
-#include <Box2D\Box2D.h>
-#include <allegro5\allegro5.h>
+#include <Box2D/Box2D.h>
+#include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
-
-
 
 class Camera;
 

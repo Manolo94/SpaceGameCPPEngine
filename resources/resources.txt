@@ -1,0 +1,13 @@
+FONT STANDARD_FONT          18    0 arial.ttf
+ANIM FX_THRUST_FIRE         35   50 10  2  5 images/astronautGraph/fireAnim.png
+ANIM BTN_MAINHATCH          70  100  6  4  6 images/button_MainHatch.png
+ANIM ASTRONAUT_BODY         30   74  1  1  1 images/astronautGraph/astroUp.png
+ANIM ASTRONAUT_PISTOL       80   20  1  1  1 images/astronautGraph/pistol.png
+ANIM COLLECTIBLE_ASTEROID  420  420  1  1  1 images/SpaceCollectiblesGraph/asteroid.png
+ANIM COLLECTIBLE_COLUMN    643   79  1  1  1 images/SpaceCollectiblesGraph/column.png
+ANIM BACKGROUND_1         1000  750  1  1  1 images/outer-space.jpg
+ANIM INDICATOR_COMPASS     120   80  1  1  1 images/compassIndicator.png
+ANIM INDICATOR_FUEL        100  600  1  1  1 images/fuelIndicator.png
+ANIM CURSOR                 50   50  1  1  1 images/cursor.png
+ANIM CURSOR_ROCKET          50   50  1  1  1 images/rocketCursor.png
+ANIM ROCKET_ENGINE          55   35  1  1  1 images/rocketEngine.png

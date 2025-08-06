@@ -98,6 +98,9 @@ int main(int argc, char **argv)
 	//----------------------------------------------------LOADING----------------------------------------------------------------
 	if (!thisGame.GetResourcesManager()->loadAllResources())
 	{
+		char* path = al_get_current_directory();
+		printf("Current working directory: %s\n", path);
+
 		al_show_native_message_box(display, "Onion ENgine", "The engine couldn't load some resources",NULL, NULL, NULL);
 		return -1;
 	};

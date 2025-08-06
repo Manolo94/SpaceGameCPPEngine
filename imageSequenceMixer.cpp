@@ -18,7 +18,7 @@ void convertImage()
 
 	al_init_image_addon();
 	
-	ALLEGRO_BITMAP *images[10];
+	ALLEGRO_BITMAP *images[11];
 	images[0] = al_load_bitmap("fire0000.png");
 	images[1] = al_load_bitmap("fire0001.png");
 	images[2] = al_load_bitmap("fire0002.png");

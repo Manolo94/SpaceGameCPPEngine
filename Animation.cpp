@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "ResourcesManager.h"
 
+#include <windows.h>
+#include <cstdio>
+
 Animation::Animation(const char* filename, 
 		float frameWidth, float frameHeight, 
 		int maxFrame, int frameDelay,

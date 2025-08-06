@@ -2,6 +2,11 @@
 #include <allegro5\allegro_font.h>
 #include "Animation.h"
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
 ResourcesManager::ResourcesManager()
 {
 	for(int i = 0; i < RESOURCE_ANIM_TOTAL; i++)
@@ -15,23 +20,152 @@ ResourcesManager::ResourcesManager()
 	AnimationResources[NULL_ANIM] = new Animation();
 };
 
+bool readPath(std::istringstream& iss, std::string& resultPath)
+{
+	// Read the rest of the line as path (including spaces or slashes)
+	std::getline(iss, resultPath);
+
+	// Trim leading whitespace from path
+	size_t start = resultPath.find_first_not_of(" \t");
+	if (start != std::string::npos) {
+		resultPath = resultPath.substr(start);
+	}
+	else {
+		resultPath.clear();  // No path found
+		return false;
+	}
+
+	return true;
+}
+
+bool ResourcesManager::parse_line(const std::string& line, int line_number) {
+	std::istringstream theStream(line);
+	std::string resultType, resultID, resultPath;
+	if (!(theStream >> resultType >> resultID)) {
+		return false;  // Failed to get first two words
+	}
+
+	// Parse the type
+	if (resultType == "FONT")
+	{
+		int fontID = 0;
+		// TODO: Setup font enums just like the animation ones
+		if (resultID == "STANDARD_FONT")
+		{
+			fontID = STANDARD_FONT;
+		}
+		else
+		{
+			std::cerr << "Unrecognized ID on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+
+		int fontSize, fontFlags;
+		if (!(theStream >> fontSize >> fontFlags)) 
+		{
+			std::cerr << "Missing fontsize and/or flags on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+
+		if (!readPath(theStream, resultPath))
+		{
+			std::cerr << "Could not read font path on " << line_number << ": " << line << "\n";
+			return false;
+		}
+
+		bool result = loadResource(al_load_font(resultPath.c_str(), fontSize, fontFlags), fontID);
+
+		if (!result)
+		{
+			std::cerr << "Failed to load resource on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+	}
+	else if (resultType == "ANIM")
+	{
+		int animID = 0;
+
+		// Find which animation enum string matches the given ID
+		bool found = false;
+		for (int i = 0; i < RESOURCE_ANIM_TOTAL; i++)
+		{
+			if (RESOURCE_ANIM_REFERENCE_str[i] == resultID)
+			{
+				found = true;
+				animID = i;
+			}
+		}
+
+		if (!found)
+		{
+			std::cerr << "Unrecognized ID on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+
+		int frameWidth, frameHeight, maxFrame, frameDelay, animationCols;
+		if (!(theStream >> frameWidth >> frameHeight >> maxFrame >> frameDelay >> animationCols))
+		{
+			std::cerr << "Missing animation properties on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+
+		if (!readPath(theStream, resultPath))
+		{
+			std::cerr << "Could not read font path on " << line_number << ": " << line << "\n";
+			return false;
+		}
+
+		bool result = loadResource(new Animation(resultPath.c_str(), frameWidth, frameHeight,
+												 maxFrame, frameDelay, animationCols), animID);
+
+		if (!result)
+		{
+			std::cerr << "Failed to load resource on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "Unrecognized type on line " << line_number << ": " << line << "\n";
+		return false;
+	}
+
+	return true;
+}
+
+// Reads a file, parses each line and loads the corresponding resource accordingly
+bool ResourcesManager::load_resource_file(const std::string& filename) {
+	std::ifstream file(filename);
+	if (!file) 
+	{
+		std::cerr << "Failed to open file: " << filename << "\n";
+		return false;
+	}
+
+	std::string line;
+	int line_number = 0;
+	while (std::getline(file, line)) 
+	{
+		++line_number;
+		// Skip blank or comment lines
+		if (line.empty() || line[0] == '#') continue;
+
+		if (!parse_line(line, line_number))
+		{
+			std::cerr << "Parse error on line " << line_number << ": " << line << "\n";
+			return false;
+		}
+	}
+
+	return true;
+}
 
 bool ResourcesManager::loadAllResources()
 {
+
+	// TODO: Return the error to be shown in a dialog box
 	//Loading Resources
-	if (!loadResource(al_load_font("arial.ttf", 18, 0), STANDARD_FONT) ||
-		!loadResource(new Animation("images/astronautGraph/astroUp.png", 30, 74), ASTRONAUT_BODY) ||
-		!loadResource(new Animation("images/astronautGraph/fireAnim.png", 35, 50, 10, 2, 5), FX_THRUST_FIRE) ||
-		!loadResource(new Animation("images/astronautGraph/pistol.png", 80, 20), ASTRONAUT_PISTOL) ||
-		!loadResource(new Animation("images/SpaceCollectiblesGraph/asteroid.png", 420, 420), COLLECTIBLE_ASTEROID) ||
-		!loadResource(new Animation("images/SpaceCollectiblesGraph/column.png", 643, 79), COLLECTIBLE_COLUMN) ||
-		!loadResource(new Animation("images/outer-space.jpg", 1000, 750), BACKGROUND_1) ||
-		!loadResource(new Animation("images/compassIndicator.png", 120, 80), INDICATOR_COMPASS) ||
-		!loadResource(new Animation("images/fuelIndicator.png", 100, 600), INDICATOR_FUEL) ||
-		!loadResource(new Animation("images/cursor.png", 50, 50), CURSOR) ||
-		!loadResource(new Animation("images/rocketCursor.png", 50, 50), CURSOR_ROCKET) ||
-		!loadResource(new Animation("images/rocketEngine.png", 55, 35), ROCKET_ENGINE) ||
-		!loadResource(new Animation("images/button_MainHatch.png", 70, 100, 6, 4, 6), BTN_MAINHATCH))
+	if(!load_resource_file("resources.txt"))
 		return false;
 	else return true;
 

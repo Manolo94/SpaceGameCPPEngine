@@ -8,15 +8,50 @@ const int WIDTH = 1920;
 const int HEIGHT = 1080;
 const float mToPx = 50;
 
-enum RESOURCE_ANIM_REFERENCE {NULL_ANIM,
-								ASTRONAUT_BODY, FX_THRUST_FIRE, ASTRONAUT_PISTOL,
-								COLLECTIBLE_ASTEROID, COLLECTIBLE_COLUMN, 
-								BACKGROUND_1, BACKGROUND_MAP, 
-								INDICATOR_COMPASS, INDICATOR_FUEL,
-								BTN_MAINHATCH,
-								CURSOR, CURSOR_ROCKET, 
-								ROCKET_ENGINE,
-								RESOURCE_ANIM_TOTAL};
+// This is used when defining enums and their string representation
+#define BASE_RESOURCES(RESOURCE)        \
+    RESOURCE(NULL_ANIM)                 \
+    RESOURCE(ASTRONAUT_BODY)            \
+    RESOURCE(FX_THRUST_FIRE)            \
+    RESOURCE(ASTRONAUT_PISTOL)     
+
+#define COLLECTIBLE_RESOURCES(RESOURCE) \
+    RESOURCE(COLLECTIBLE_ASTEROID)      \
+    RESOURCE(COLLECTIBLE_COLUMN)        \
+
+#define BACKGROUND_RESOURCES(RESOURCE)  \
+	RESOURCE(BACKGROUND_1)              \
+	RESOURCE(BACKGROUND_MAP)       
+
+#define INDICATOR_RESOURCES(RESOURCE)   \
+	RESOURCE(INDICATOR_COMPASS)         \
+	RESOURCE(INDICATOR_FUEL)
+
+#define BUTTON_RESOURCES(RESOURCE)      \
+	RESOURCE(BTN_MAINHATCH)                
+
+#define CURSOR_RESOURCES(RESOURCE)      \
+	RESOURCE(CURSOR)                    \
+	RESOURCE(CURSOR_ROCKET)  
+
+#define ITEM_RESOURCES(RESOURCE)        \
+	RESOURCE(ROCKET_ENGINE) 
+
+#define GENERATE_ENUM(ENUM) ENUM,
+#define GENERATE_STRING(STRING) #STRING,
+
+enum RESOURCE_ANIM_REFERENCE 
+{	
+	BASE_RESOURCES(GENERATE_ENUM)
+	COLLECTIBLE_RESOURCES(GENERATE_ENUM)
+	BACKGROUND_RESOURCES(GENERATE_ENUM)
+	INDICATOR_RESOURCES(GENERATE_ENUM)
+	BUTTON_RESOURCES(GENERATE_ENUM)
+	CURSOR_RESOURCES(GENERATE_ENUM)
+	ITEM_RESOURCES(GENERATE_ENUM)
+	RESOURCE_ANIM_TOTAL
+};
+
 enum RESOURCE_FONT_REFERENCE {STANDARD_FONT, RESOURCE_FONT_TOTAL};
 
 enum GAME_STATS {DEBUG_GAME, PLAYER_DISTANCE_TO_CENTER, PLAYER_ANGLE_TO_CENTER, PLAYER_FUEL, GAME_STATS_TOTAL};
@@ -54,8 +89,8 @@ public:
 	};
 	float static randRange(float minNumInit, float maxNumInit, int decimalPlaces = 0)
 	{
-		int minNum = minNumInit * pow(double (10), decimalPlaces);
-		int maxNum = maxNumInit * pow(double (10), decimalPlaces);
-		return (float (rand()%(maxNum - minNum + 1) + minNum) / pow(double (10), decimalPlaces));
+		int minNum = int(minNumInit * int(pow(double (10), decimalPlaces)));
+		int maxNum = int(maxNumInit * int(pow(double (10), decimalPlaces)));
+		return (float (rand()%(maxNum - minNum + 1) + minNum) / float(pow(double (10), decimalPlaces)));
 	};
 };
