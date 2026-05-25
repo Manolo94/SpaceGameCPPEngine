@@ -106,11 +106,11 @@ int main(int argc, char **argv)
 	};
 
 	//Creating Indicators
-	new IndicatorCompass(0.10*WIDTH, 0.9*HEIGHT, 0, &thisGame);
-	new IndicatorFuel(0.95*WIDTH, 0.5*HEIGHT, 0, &thisGame);
+	IndicatorCompass(0.10*WIDTH, 0.9*HEIGHT, 0, &thisGame);
+	IndicatorFuel(0.95*WIDTH, 0.5*HEIGHT, 0, &thisGame);
 
 	//Creating Background
-	new Background(thisGame.GetResourcesManager()->retrieveResource_ANIM(BACKGROUND_1), 0, 0, 0, 1000, 1000, 0.09, thisGame.GetMainCamera());
+	Background(thisGame.GetResourcesManager()->retrieveResource_ANIM(BACKGROUND_1), 0, 0, 0, 1000, 1000, 0.09, thisGame.GetMainCamera());
 	//thisGame.GetMainCamera()->AddBackground(new Background(thisGame.GetResourcesManager()->retrieveResource_ANIM_piece(BACKGROUND_MAP, 0, 1000, 0, 500), 600, 400, 0, 1000, 500, 1, false));
 	//mainCamera->AddBackground(new Background(bg2Anim, 0, 0, 0, 3000, 3000, 1.0));
 

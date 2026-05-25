@@ -19,55 +19,55 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AllegroBox2DDebugDraw.cpp" />
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="CollectorRocket.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="MouseObject.cpp" />
-    <ClCompile Include="MouseState.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="SpaceCollectible_Asteroid.cpp" />
-    <ClCompile Include="Astronaut.cpp" />
-    <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="SpaceCollectible_Column.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="imageSequenceMixer.cpp" />
-    <ClCompile Include="IndicatorCompass.h" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderObject.cpp" />
-    <ClCompile Include="SpaceCollectible.cpp" />
-    <ClCompile Include="TextButton.cpp" />
+    <ClCompile Include="src/AllegroBox2DDebugDraw.cpp" />
+    <ClCompile Include="src/Animation.cpp" />
+    <ClCompile Include="src/Button.cpp" />
+    <ClCompile Include="src/CollectorRocket.cpp" />
+    <ClCompile Include="src/GameState.cpp" />
+    <ClCompile Include="src/Menu.cpp" />
+    <ClCompile Include="src/MouseObject.cpp" />
+    <ClCompile Include="src/MouseState.cpp" />
+    <ClCompile Include="src/ResourceManager.cpp" />
+    <ClCompile Include="src/SpaceCollectible_Asteroid.cpp" />
+    <ClCompile Include="src/Astronaut.cpp" />
+    <ClCompile Include="src/Background.cpp" />
+    <ClCompile Include="src/Camera.cpp" />
+    <ClCompile Include="src/SpaceCollectible_Column.cpp" />
+    <ClCompile Include="src/Game.cpp" />
+    <ClCompile Include="src/GameObject.cpp" />
+    <ClCompile Include="src/imageSequenceMixer.cpp" />
+    <ClCompile Include="src/main.cpp" />
+    <ClCompile Include="src/RenderObject.cpp" />
+    <ClCompile Include="src/SpaceCollectible.cpp" />
+    <ClCompile Include="src/TextButton.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AllegroBox2DDebugDraw.h" />
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="CollectorRocket.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="IndicatorFuel.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="MouseObject.h" />
-    <ClInclude Include="MouseState.h" />
-    <ClInclude Include="SpaceCollectible_Asteroid.h" />
-    <ClInclude Include="Astronaut.h" />
-    <ClInclude Include="Background.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="SpaceCollectible_Column.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Indicator.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="RenderObject.h" />
-    <ClInclude Include="SpaceCollectible.h" />
-    <ClInclude Include="ResourcesManager.h" />
-    <ClInclude Include="SimpleBox2D.h" />
-    <ClInclude Include="State.h" />
-    <ClInclude Include="TextButton.h" />
+    <ClInclude Include="include/AllegroBox2DDebugDraw.h" />
+    <ClInclude Include="include/Animation.h" />
+    <ClInclude Include="include/Button.h" />
+    <ClInclude Include="include/CollectorRocket.h" />
+    <ClInclude Include="include/GameState.h" />
+    <ClInclude Include="include/IndicatorFuel.h" />
+    <ClInclude Include="include/Menu.h" />
+    <ClInclude Include="include/MouseObject.h" />
+    <ClInclude Include="include/MouseState.h" />
+    <ClInclude Include="include/SpaceCollectible_Asteroid.h" />
+    <ClInclude Include="include/Astronaut.h" />
+    <ClInclude Include="include/Background.h" />
+    <ClInclude Include="include/Camera.h" />
+    <ClInclude Include="include/SpaceCollectible_Column.h" />
+    <ClInclude Include="include/Game.h" />
+    <ClInclude Include="include/GameObject.h" />
+    <ClInclude Include="include/Globals.h" />
+    <ClInclude Include="include/Indicator.h" />
+    <ClInclude Include="include/Player.h" />
+    <ClInclude Include="include/RenderObject.h" />
+    <ClInclude Include="include/SpaceCollectible.h" />
+    <ClInclude Include="include/ResourcesManager.h" />
+    <ClInclude Include="include/SimpleBox2D.h" />
+    <ClInclude Include="include/State.h" />
+    <ClInclude Include="include/TextButton.h" />
+    <ClInclude Include="include/IndicatorCompass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -155,6 +155,8 @@
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
     <Allegro_AddonDialog>true</Allegro_AddonDialog>
+    <IncludePath>$(ProjectDir)include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <SourcePath>$(ProjectDir)src;$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -174,6 +176,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>ALLEGRO_STATICLINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
+      <AdditionalIncludeDirectories>$(ProjectDir)src; $(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -184,7 +187,7 @@
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
     <PostBuildEvent>
-      <Command>xcopy /E /Y /D "$(SolutionDir)resources\*" "$(OutDir)"</Command>
+      <Command>xcopy /E /Y /D "$(ProjectDir)resources\*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
