@@ -170,11 +170,14 @@ int main(int argc, char **argv)
 					thisGame.ChangeState(GAME_STATES::RESOURCE_COLLECTION);
 
 				break;
-			case ALLEGRO_KEY_D:
+			case ALLEGRO_KEY_F3:
 				if (thisGame.GetGameStat(DEBUG_GAME) == 0) thisGame.SetGameStat(1, DEBUG_GAME);
 				else thisGame.SetGameStat(0, DEBUG_GAME);
 				break;
 			}
+
+			if (thisGame.GetGameState() == GAME_STATES::RESOURCE_COLLECTION)
+				thisGame.GetShipBuilder()->OnKeyUp(ev.keyboard.keycode);
 		}
 		
 		//MOUSE BUTTON
@@ -192,6 +195,7 @@ int main(int argc, char **argv)
 		//MOUSE MOVE
 		else if(ev.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
+			if (ev.mouse.dz != 0) thisGame.GetMainCamera()->ZoomBy(ev.mouse.dz);
 			thisGame.UpdateMouse(ev.mouse.x, ev.mouse.y);
 		}
 
@@ -227,7 +231,12 @@ int main(int argc, char **argv)
 			thisGame.Render();
 
 			//DebugDraw
-			if(thisGame.GetGameStat(DEBUG_GAME) == 1) world.DrawDebugData();
+			if(thisGame.GetGameStat(DEBUG_GAME) == 1)
+			{
+				thisGame.GetMainCamera()->UseWorldTransform();
+				world.DrawDebugData();
+				thisGame.GetMainCamera()->UseScreenTransform();
+			}
 
 			//FLIP BUFFERS========================
 			al_flip_display();

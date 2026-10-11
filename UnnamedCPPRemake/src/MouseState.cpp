@@ -44,6 +44,14 @@ void Collector_Default::RightUp()
 	masterMouseObject->GetMasterGame()->GetPlayer()->StopPulse();
 };
 
+void Collector_Default::LeftDown()
+{
+	Game *game = masterMouseObject->GetMasterGame();
+	if (game->GetGameState() != GAME_STATES::RESOURCE_COLLECTION) return;
+	if (game->GetShipBuilder()->StartDrag(masterMouseObject->GetTouchingObject()))
+		masterMouseObject->ChangeMouseState(new Builder_Drag(masterMouseObject));
+};
+
 void Collector_Default::OnEnterObject(GameObject *objectTouched)
 {
 	if (objectTouched->GetType() == GAME_OBJECT_TYPES::SPACE_COLLECTIBLE && masterMouseObject->GetDistToPlayer() <= 4 * mToPx)
@@ -54,6 +62,29 @@ void Collector_Default::OnEnterObject(GameObject *objectTouched)
 };
 //***************************************************************************************************
 
+//Builder Drag
+Builder_Drag::Builder_Drag(MouseObject* mouseObject)
+{
+	Builder_Drag::Init(mouseObject);
+};
+
+void Builder_Drag::StartState()
+{
+	masterMouseObject->GetCursor()->SetRotation(0);
+	cursor = masterMouseObject->GetMasterGame()->GetResourcesManager()->retrieveResource_ANIM(CURSOR);
+};
+
+void Builder_Drag::EndState()
+{
+	masterMouseObject->GetMasterGame()->GetShipBuilder()->EndDrag();
+};
+
+void Builder_Drag::LeftUp()
+{
+	masterMouseObject->ChangeMouseState(new Collector_Default(masterMouseObject));
+};
+
+//***************************************************************************************************
 //Collect Put Rocket
 Collector_PutRocket::Collector_PutRocket(MouseObject* mouseObject)
 {

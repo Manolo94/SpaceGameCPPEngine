@@ -33,6 +33,10 @@ private:
 	//GameObject being followed
 	GameObject* followObject;
 
+	//Zoom (1 = default). zoom eases towards targetZoom every update
+	float zoom;
+	float targetZoom;
+
 	//Physics engine constants
 	float32 timeStep = 1.0f / 60.0f;
 	int32 velocityIterations = 6;
@@ -61,6 +65,8 @@ public:
 	void AddBackground(RenderObject *background);
 	void AddIndicator(RenderObject *indicator);
 	void AddToLayer(RenderObject *renderObject, int layer);
+	//Stop updating a GameObject (e.g. a module that became part of a ship). Not safe during Update()
+	void RemoveGameObject(GameObject *gameObject) { GameObjectList.remove(gameObject); };
 	
 	//Movement
 	void Move(float x,float y);
@@ -81,6 +87,19 @@ public:
 	void SetTimeStep(float32 newTimeStep) { timeStep = newTimeStep; };
 	void SetVelocityIterations(float32 newVelIter) { velocityIterations = newVelIter; };
 	void SetPositionIterations(float32 newPosIter) { positionIterations = newPosIter; };
+
+	//Zoom
+	void ZoomBy(float wheelSteps);
+	float GetZoom() { return zoom; };
+	//Transforms used while rendering: world layers are scaled around the screen centre, HUD is not
+	void UseWorldTransform();
+	void UseScreenTransform();
+	//Convert a screen position (pixels) to view position (unzoomed pixels, what GameObjects use)
+	float ScreenToViewX(float screenX) { return WIDTH / 2 + (screenX - WIDTH / 2) / zoom; };
+	float ScreenToViewY(float screenY) { return HEIGHT / 2 + (screenY - HEIGHT / 2) / zoom; };
+	//Convert a view position to world position (meters)
+	float ViewToWorldX(float viewX) { return viewX / mToPx + focusX - WIDTH / 2 / mToPx; };
+	float ViewToWorldY(float viewY) { return viewY / mToPx + focusY - HEIGHT / 2 / mToPx; };
 
 	//Base Methods
 	void Update(float mouseX, float mouseY);

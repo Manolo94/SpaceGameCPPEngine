@@ -14,6 +14,7 @@
 #include "GameState.h"
 
 #include "Camera.h"
+#include "ShipBuilder.h"
 #include "Background.h"
 #include "GameObject.h"
 #include "Animation.h"
@@ -47,6 +48,7 @@ protected:
 	Camera *mainCamera;
 	MouseObject *mouse;
 	Player *player;
+	ShipBuilder *shipBuilder;
 
 	MainMenu* main_menu;
 
@@ -82,6 +84,7 @@ public:
 		};
 		return NULL;
 	};
+	ShipBuilder *GetShipBuilder() { return shipBuilder; };
 	ResourcesManager *GetResourcesManager()
 	{
 		if(Game::GetInit())

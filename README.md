@@ -32,6 +32,14 @@ The design intent was a resource-collection survival game set in space: your shi
 
 **HUD** — fuel bar indicator on the right edge of the screen, compass indicator bottom-left pointing toward the origin (intended to mark the shipwreck; currently a floating door). Both implemented as `Indicator` subclasses.
 
+**Camera zoom** — mouse wheel zooms the world in and out (0.35x–2.5x) around the screen centre with easing. Zoom is an Allegro transform on the world layer only; the starfield and HUD stay unscaled, and the mouse is converted back into world space for picking.
+
+**Ship building** — LUMA-7 assembles rudimentary ships from square modules (hull and thruster) on a 1.2 m grid:
+- Modules are spawned at the cursor for now (in the final game they are harvested from debris).
+- Left-drag pulls a module or a whole ship with a tractor beam (a Box2D mouse joint limited to 7 m from the player). Q/E turn a held module in quarter turns.
+- Releasing a module next to another shows a snap preview and attaches it. Every module of a ship is a fixture of one rigid body, so mass, centre of mass and inertia come from the layout.
+- F clamps LUMA-7 onto the nearest ship. W/S fire the thrusters that push forward/backward, A/D the ones whose torque turns the ship that way, each applying force at its own nozzle, so the ship flies purely on physics.
+
 **UI system** — `Menu`, `Button`, and `TextButton` components. Mouse input tracked via `MouseObject` and `MouseState`.
 
 ---
@@ -50,6 +58,7 @@ Game
   ├── Camera             — world transform and parallax
   ├── MouseObject        — mouse state tracking
   ├── Player             — input, physics, thruster
+  ├── ShipBuilder        — module spawning, tractor beam, snapping, piloting
   ├── MainMenu           — UI state
   └── GameState machine  — MAIN_MENU / RESOURCE_COLLECTION
 
@@ -57,6 +66,8 @@ GameObject (base)
   └── RenderObject
         ├── Astronaut
         ├── CollectorRocket
+        ├── ShipModule      — hull / thruster block, loose or part of a ship
+        ├── Ship            — rigid compound body built from modules
         └── SpaceCollectible
               ├── SpaceCollectible_Asteroid
               └── SpaceCollectible_Column
@@ -68,7 +79,7 @@ GameObject (base)
 
 - Oxygen management (timed depletion, replenishment from resources)
 - Resource accounting and inventory
-- Spaceship construction from collected materials
+- Harvesting ship modules from debris (they are spawned with 1/2 for now)
 - Escape condition / win state
 
 ---
@@ -79,8 +90,15 @@ GameObject (base)
 |-------|--------|
 | Right click | Thruster |
 | Left click | Attach rocket to nearby asteroid |
+| Mouse wheel | Zoom in / out |
+| 1 / 2 | Spawn a hull / thruster module at the cursor |
+| Left drag | Move a module or ship with the tractor beam (release next to a module to attach) |
+| Q / E | Rotate the held module a quarter turn |
+| F | Board / leave the nearest ship |
+| W / S | Fire forward / backward thrusters while aboard |
+| A / D | Fire turning thrusters while aboard |
 | Esc | Toggle menu |
-| D | Toggle Box2D debug draw |
+| F3 | Toggle Box2D debug draw |
 
 ---
 

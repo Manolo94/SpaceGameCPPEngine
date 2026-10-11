@@ -142,8 +142,8 @@ void Astronaut::Update(float cameraXOffset, float cameraYOffset, bool mouseInteg
 	}
 
 	//Collector tool animation conditions
-	if (masterGame->GetMouse()->GetTouchingObject() != NULL 
-		&& masterGame->GetMouse()->GetTouchingObject()->GetType() == GAME_OBJECT_TYPES::SPACE_COLLECTIBLE)
+	if (masterGame->GetShipBuilder()->IsDragging() || (masterGame->GetMouse()->GetTouchingObject() != NULL
+		&& masterGame->GetMouse()->GetTouchingObject()->GetType() == GAME_OBJECT_TYPES::SPACE_COLLECTIBLE))
 	{
 		toolAnimation->Unhide();
 		toolAnimation->SetRotation(masterGame->GetMouse()->GetAngleToPlayer()+3.14);

@@ -18,6 +18,9 @@ Camera::Camera()
 
 	Camera::follow = false;
 	Camera::followVelocity = .05;
+
+	Camera::zoom = 1;
+	Camera::targetZoom = 1;
 };
 
 void Camera::Init(float initFX, float initFY, b2World* world, Game* game)
@@ -85,8 +88,35 @@ void Camera::Follow(GameObject* followedObject, int timeFrame)
 
 	Camera::movingTimeFrame = timeFrame;
 };
+void Camera::ZoomBy(float wheelSteps)
+{
+	targetZoom *= pow(ZOOM_STEP, wheelSteps);
+	if (targetZoom < ZOOM_MIN) targetZoom = ZOOM_MIN;
+	if (targetZoom > ZOOM_MAX) targetZoom = ZOOM_MAX;
+};
+
+void Camera::UseWorldTransform()
+{
+	ALLEGRO_TRANSFORM transform;
+	al_identity_transform(&transform);
+	al_translate_transform(&transform, -WIDTH / 2, -HEIGHT / 2);
+	al_scale_transform(&transform, zoom, zoom);
+	al_translate_transform(&transform, WIDTH / 2, HEIGHT / 2);
+	al_use_transform(&transform);
+};
+
+void Camera::UseScreenTransform()
+{
+	ALLEGRO_TRANSFORM transform;
+	al_identity_transform(&transform);
+	al_use_transform(&transform);
+};
+
 void Camera::Update(float mouseX, float mouseY)
 {
+	//Ease the zoom towards its target
+	zoom += (targetZoom - zoom) * ZOOM_EASING;
+
 	//DEBUG
 	if (masterGame->CheckKeyPressed(ALLEGRO_KEY_RIGHT)) Camera::Move(1, 0);
 	if (masterGame->CheckKeyPressed(ALLEGRO_KEY_LEFT)) Camera::Move(-1, 0);
@@ -121,15 +151,23 @@ void Camera::Update(float mouseX, float mouseY)
 };
 void Camera::Render()
 {
-	//RENDER FOR ALL LAYERS
+	//RENDER FOR ALL LAYERS. Only the world layer zooms: the starfield is "infinitely" far and the HUD is on screen
 	for (int i = 1; i < LAYERS_TOTAL; i++)
 	{
+		if (i == MAIN_LAYER) UseWorldTransform();
+		else UseScreenTransform();
+
 		std::list<RenderObject *>::iterator iterRender;
 		for (iterRender = RenderLayers[i]->begin(); iterRender != RenderLayers[i]->end(); iterRender++)
 		{
 			(*iterRender)->Render();
 		}
 	};
+	//Ship building overlays (tractor beam, snap preview) sit on top of the world
+	UseWorldTransform();
+	masterGame->GetShipBuilder()->RenderOverlay();
+	UseScreenTransform();
+
 	// LAST... RENDER MOUSE CURSOR.. Mouse is above any layer, NO EXCEPTIONS...
 	masterGame->GetMouse()->Render();
 };

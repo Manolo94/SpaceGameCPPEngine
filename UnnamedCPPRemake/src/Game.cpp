@@ -8,6 +8,7 @@
 //CLASS INITIATOR
 Game::Game()
 {
+	shipBuilder = NULL;
 	Game::initialized = false;
 
 	Game::gameState = NULL;
@@ -68,6 +69,8 @@ void Game::StartGame()
 	
 	//Creating Player...
 	Game::player = new Astronaut(PLAYER_INIT_X, PLAYER_INIT_Y, 0, 0, GetMainCamera()->focusedWorld, this);
+	//Ship building
+	shipBuilder = new ShipBuilder(this, GetMainCamera()->focusedWorld);
 	//Max Fuel
 	GameStats[PLAYER_FUEL] = 1.00;
 	//Following Player
@@ -165,12 +168,13 @@ void Game::Update(float mouseX, float mouseY)
 	//Update Game
 	if (gameState == NULL) return;
 	gameState->UpdateState();
+	if (shipBuilder != NULL) shipBuilder->Update();
 
 	//Update Camera
 	Game::GetMainCamera()->Update(mouseX, mouseY);
 
 	//Update mouse
-	Game::UpdateMouse(mouse->GetX(), mouse->GetY());
+	Game::UpdateMouse(mouse->GetScreenX(), mouse->GetScreenY());
 };
 
 //RENDER
@@ -185,5 +189,12 @@ void Game::Render()
 	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
 					al_map_rgb(255, 255, 255), 300, 120, 0, "Get close to asteroids and left click on them to attach rocket");
 	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
-					al_map_rgb(255, 255, 255), 300, 140, 0, "Esc for menu");
+					al_map_rgb(255, 255, 255), 300, 140, 0, "Esc for menu, mouse wheel to zoom");
+	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(255, 255, 255), 300, 170, 0, "1 / 2: spawn hull / thruster at the cursor. Left-drag modules (Q/E rotate), release next to another to attach");
+	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(255, 255, 255), 300, 190, 0, "F: board or leave a ship. Aboard: W/S thrust, A/D turn");
+	if (shipBuilder != NULL && shipBuilder->IsPiloting())
+		al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(120, 255, 255), WIDTH / 2, 60, ALLEGRO_ALIGN_CENTRE, "PILOTING");
 };
