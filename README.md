@@ -39,6 +39,8 @@ The design intent was a resource-collection survival game set in space: your shi
 - Left-drag pulls a module or a whole ship with a tractor beam (a Box2D mouse joint limited to 7 m from the player). Q/E turn a held module in quarter turns.
 - Releasing a module next to another shows a snap preview and attaches it. Every module of a ship is a fixture of one rigid body, so mass, centre of mass and inertia come from the layout.
 - F clamps LUMA-7 onto the nearest ship. W/S fire the thrusters that push forward/backward, A/D the ones whose torque turns the ship that way, each applying force at its own nozzle, so the ship flies purely on physics.
+- Each thruster is wired to any mix of six controls: W/S (forward/backward), A/D (turn left/right) and Q/E (strafe left/right). Each thruster applies force at its own nozzle, so the ship flies purely on physics. A new thruster is wired from its placement: forward-facing ones on W, ones with turning torque on A/D, sideways ones in line with the centre of mass on Q/E.
+- Aboard, R opens the wiring. Hover a thruster and tap a control key to connect or disconnect it; it test-fires when connected. C disconnects it. Holding a key lights every thruster on that control without pushing the ship. A rewired thruster keeps its manual wiring, the rest keep following the layout.
 
 **UI system** — `Menu`, `Button`, and `TextButton` components. Mouse input tracked via `MouseObject` and `MouseState`.
 
@@ -93,10 +95,11 @@ GameObject (base)
 | Mouse wheel | Zoom in / out |
 | 1 / 2 | Spawn a hull / thruster module at the cursor |
 | Left drag | Move a module or ship with the tractor beam (release next to a module to attach) |
-| Q / E | Rotate the held module a quarter turn |
+| Q / E | Rotate the held module a quarter turn; aboard, fire strafing thrusters |
 | F | Board / leave the nearest ship |
 | W / S | Fire forward / backward thrusters while aboard |
 | A / D | Fire turning thrusters while aboard |
+| R | Aboard: open / close the thruster wiring (hover a thruster, tap W/A/S/D/Q/E to toggle, C to clear) |
 | Esc | Toggle menu |
 | F3 | Toggle Box2D debug draw |
 

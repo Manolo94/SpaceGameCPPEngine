@@ -22,6 +22,12 @@ private:
 
 	//Exhaust plume (thrusters only, created when attached)
 	RenderObject *plume;
+	//Seconds left of a test burst shown after rewiring
+	float testBurst;
+
+	//Thruster wiring (SHIP_CONTROLS flags). Until the player rewires it, the ship picks the controls from its placement.
+	bool manuallyWired;
+	int bindings;
 
 public:
 	//x, y in world pixels, angle in radians
@@ -42,6 +48,13 @@ public:
 	//Called by Ship: gives up the module's own body and renders relative to the ship
 	void AttachTo(Ship *newShip, int newCellX, int newCellY, int newQuarterTurns);
 
-	//Show/hide the exhaust plume
+	//Show/hide the exhaust plume. A pending test burst keeps it lit.
 	void SetFiring(bool firing);
+	//Flash the plume for a moment without pushing the ship
+	void TestBurst() { testBurst = 0.3f; };
+	void UpdateTestBurst(float dt) { if (testBurst > 0) testBurst -= dt; };
+
+	bool IsManuallyWired() { return manuallyWired; };
+	int GetManualBindings() { return bindings; };
+	void SetManualBindings(int newBindings) { manuallyWired = true; bindings = newBindings; };
 };

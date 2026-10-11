@@ -7,6 +7,9 @@ ShipModule::ShipModule(SHIP_MODULE_TYPES type, float x, float y, float angle, b2
 	moduleType = type;
 	ship = NULL;
 	plume = NULL;
+	testBurst = 0;
+	manuallyWired = false;
+	bindings = 0;
 	cellX = 0;
 	cellY = 0;
 	quarterTurns = 0;
@@ -74,6 +77,6 @@ void ShipModule::AttachTo(Ship *newShip, int newCellX, int newCellY, int newQuar
 void ShipModule::SetFiring(bool firing)
 {
 	if (plume == NULL) return;
-	if (firing) plume->Unhide();
+	if (firing || testBurst > 0) plume->Unhide();
 	else plume->Hide();
 };
