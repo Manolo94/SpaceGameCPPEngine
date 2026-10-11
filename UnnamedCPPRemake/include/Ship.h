@@ -5,14 +5,17 @@
 
 class ShipModule;
 
-//Ship thruster commands
-struct ShipControls
+//Ship controls as bit flags, so a thruster can be wired to any combination of them
+enum SHIP_CONTROLS
 {
-	bool forward;
-	bool backward;
-	bool turnLeft;
-	bool turnRight;
+	SHIP_CONTROL_FORWARD = 1,      //W
+	SHIP_CONTROL_BACKWARD = 2,     //S
+	SHIP_CONTROL_TURN_LEFT = 4,    //A
+	SHIP_CONTROL_TURN_RIGHT = 8,   //D
+	SHIP_CONTROL_STRAFE_LEFT = 16, //Q
+	SHIP_CONTROL_STRAFE_RIGHT = 32 //E
 };
+const int SHIP_CONTROL_COUNT = 6;
 
 //A rigid ship assembled from ShipModules. All modules are fixtures of one body laid on a grid of
 //SHIP_CELL_SIZE cells, so thrusters apply force at their own position and the ship turns from physics.
@@ -32,8 +35,11 @@ public:
 	//Attach a loose module; quarterTurns is its orientation relative to the ship
 	void Attach(ShipModule *module, int cellX, int cellY, int quarterTurns);
 
-	//Fire the thrusters matching the controls, returns how many fired
-	int Fire(const ShipControls &controls);
+	//Controls a thruster answers to: its manual wiring, or the ones its placement suggests
+	int GetBindings(ShipModule *thruster);
+	//Fire the thrusters wired to any of the held controls (SHIP_CONTROLS flags), returns how many fired.
+	//A dry run only lights the plumes, used to preview the wiring.
+	int Fire(int controls, bool dryRun = false);
 
 	void virtual Update(float cameraXOffset = 0, float cameraYOffset = 0, bool mouseIntegration = false, float mouseX = 0, float mouseY = 0);
 };

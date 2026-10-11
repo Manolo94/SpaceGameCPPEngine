@@ -193,8 +193,16 @@ void Game::Render()
 	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
 					al_map_rgb(255, 255, 255), 300, 170, 0, "1 / 2: spawn hull / thruster at the cursor. Left-drag modules (Q/E rotate), release next to another to attach");
 	al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
-					al_map_rgb(255, 255, 255), 300, 190, 0, "F: board or leave a ship. Aboard: W/S thrust, A/D turn");
-	if (shipBuilder != NULL && shipBuilder->IsPiloting())
+					al_map_rgb(255, 255, 255), 300, 190, 0, "F: board or leave a ship. Aboard: W/S thrust, A/D turn, Q/E strafe, R: rewire thrusters");
+	if (shipBuilder != NULL && shipBuilder->IsWiring())
+	{
+		al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(255, 200, 80), WIDTH / 2, 60, ALLEGRO_ALIGN_CENTRE, "WIRING - engines safe");
+		al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
+					al_map_rgb(255, 200, 80), WIDTH / 2, 82, ALLEGRO_ALIGN_CENTRE,
+					"Hover a thruster, tap W/A/S/D/Q/E to connect or disconnect it, C clears it. Hold a key to see its thrusters. R to finish");
+	}
+	else if (shipBuilder != NULL && shipBuilder->IsPiloting())
 		al_draw_text(GetResourcesManager()->retrieveResource_FONT(STANDARD_FONT),
 					al_map_rgb(120, 255, 255), WIDTH / 2, 60, ALLEGRO_ALIGN_CENTRE, "PILOTING");
 };
