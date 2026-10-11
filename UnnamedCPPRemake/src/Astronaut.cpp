@@ -15,6 +15,8 @@ Astronaut::Astronaut(float initX, float initY, float initVelX, float initVelY, b
 	//LUMA-7 frames carry some padding around the robot, so the frame is a bit taller than the 1.7m body
 	float bodyHeight = 1.8*mToPx;
 	float bodyWidth = bodyHeight*idleAnim->frameWidth/idleAnim->frameHeight;
+	//Children are drawn with their size multiplied by the body's scale, so size them in body-frame units
+	float bodyScale = bodyHeight/idleAnim->frameHeight;
 
 	//Backpack thruster plumes. Created before the body so they render behind it.
 	float plumeHeight = bodyHeight*0.75;
@@ -23,7 +25,7 @@ Astronaut::Astronaut(float initX, float initY, float initVelX, float initVelY, b
 	{
 		Astronaut::thrustPlumes[i] = new RenderObject();
 		Astronaut::thrustPlumes[i]->Init(plumeAnim, bodyWidth*(i == 0 ? -0.12 : 0.12), bodyHeight*0.02, 0,
-			plumeWidth, plumeHeight, game, MAIN_LAYER);
+			plumeWidth/bodyScale, plumeHeight/bodyScale, game, MAIN_LAYER);
 		//Anchor the plume at its nozzle end
 		Astronaut::thrustPlumes[i]->SetRotationCenter(plumeAnim->frameWidth / 2, 0);
 		Astronaut::thrustPlumes[i]->ToFrame(i*3);
@@ -42,7 +44,7 @@ Astronaut::Astronaut(float initX, float initY, float initVelX, float initVelY, b
 	float toolWidth = bodyWidth*0.6;
 	Astronaut::toolAnimation = new RenderObject();
 	Astronaut::toolAnimation->Init(toolAnim, 0, -bodyHeight*0.12, 0,
-		toolWidth, toolWidth*toolAnim->frameHeight/toolAnim->frameWidth, game, MAIN_LAYER);
+		toolWidth/bodyScale, toolWidth/bodyScale*toolAnim->frameHeight/toolAnim->frameWidth, game, MAIN_LAYER);
 	Astronaut::toolAnimation->SetRotationCenter(0, toolAnim->frameHeight / 2);
 	Astronaut::toolAnimation->ToFrame(0, 0);
 	Astronaut::toolAnimation->Hide();
