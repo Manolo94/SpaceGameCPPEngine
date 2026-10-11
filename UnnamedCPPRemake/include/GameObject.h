@@ -1,7 +1,7 @@
 #pragma once
 
-#include <allegro5\allegro5.h>
-#include <allegro5\allegro_primitives.h>
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_primitives.h>
 #include <list>
 #include "Globals.h"
 #include "SimpleBox2D.h"
@@ -29,7 +29,7 @@ public:
 	//Destroyer
 	void virtual Destroy();
 	//Initializer
-	void GameObject::Init(Animation *animation, float x, float y, float width, float height, b2World *world, Game *game, int renderLayer, bool staticPhysics = false);
+	void Init(Animation *animation, float x, float y, float width, float height, b2World *world, Game *game, int renderLayer, bool staticPhysics = false);
 
 	//Update
 	void virtual Update(float cameraXOffset = 0, float cameraYOffset = 0, bool mouseIntegration = false, float mouseX = 0, float mouseY = 0);

@@ -81,8 +81,8 @@ public:
 	void LeftClickUp();
 
 	//Update
-	void MouseObject::Update(float mouseX, float mouseY, float offSetX, float offSetY);
+	void Update(float mouseX, float mouseY, float offSetX, float offSetY);
 
 	//Render
-	void MouseObject::Render();
+	void Render();
 };

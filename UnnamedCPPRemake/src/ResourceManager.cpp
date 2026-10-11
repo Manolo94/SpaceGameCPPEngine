@@ -1,5 +1,5 @@
 #include "ResourcesManager.h"
-#include <allegro5\allegro_font.h>
+#include <allegro5/allegro_font.h>
 #include "Animation.h"
 
 #include <iostream>
@@ -24,6 +24,10 @@ bool readPath(std::istringstream& iss, std::string& resultPath)
 {
 	// Read the rest of the line as path (including spaces or slashes)
 	std::getline(iss, resultPath);
+
+	// Trim trailing whitespace, including the '\r' of CRLF files read on Linux
+	size_t end = resultPath.find_last_not_of(" \t\r");
+	resultPath.erase(end == std::string::npos ? 0 : end + 1);
 
 	// Trim leading whitespace from path
 	size_t start = resultPath.find_first_not_of(" \t");

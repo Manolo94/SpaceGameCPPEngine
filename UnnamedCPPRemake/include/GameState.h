@@ -30,9 +30,9 @@ public:
 
 	GameState_MainMenu(Game* masterGame);
 
-	void GameState_MainMenu::StartState();
-	void GameState_MainMenu::UpdateState();
-	void GameState_MainMenu::EndState();
+	void StartState();
+	void UpdateState();
+	void EndState();
 };
 
 class GameState_ResourceCollection : public GameState
@@ -46,7 +46,7 @@ public:
 		readyForPause = false;
 	};
 
-	void GameState_ResourceCollection::StartState();
-	void GameState_ResourceCollection::UpdateState();
-	void GameState_ResourceCollection::EndState();
+	void StartState();
+	void UpdateState();
+	void EndState();
 };

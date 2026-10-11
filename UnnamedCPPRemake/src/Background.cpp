@@ -1,4 +1,4 @@
-#include <allegro5\allegro5.h>
+#include <allegro5/allegro5.h>
 #include "Animation.h"
 #include "Background.h"
 #include "Camera.h"

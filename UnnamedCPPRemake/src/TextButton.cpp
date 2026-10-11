@@ -2,9 +2,8 @@
 #include "TextButton.h"
 #include "RenderObject.h"
 
-TextButton::TextButton()
+TextButton::TextButton() : Button()
 {
-	Button::Button();
 };
 
 void TextButton::Init(int x, int y, int width, int height, b2World* world, Game* game,
