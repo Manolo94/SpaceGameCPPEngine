@@ -11,6 +11,8 @@ MouseObject::MouseObject(Game* game)
 
 	x = 0;
 	y = 0;
+	screenX = 0;
+	screenY = 0;
 
 	MouseObject::mouseCursor = new RenderObject();
 
@@ -30,7 +32,7 @@ void MouseObject::ChangeMouseState(MouseState* newMouseState)
 //Change Cursor
 void MouseObject::ChangeCursor(Animation* cursorSkin)
 {
-	MouseObject::mouseCursor->ChangeAnimation(cursorSkin, FRONT_LAYER);
+	MouseObject::mouseCursor->SetAnimation(cursorSkin);
 };
 
 //Events
@@ -47,37 +49,40 @@ void MouseObject::RightClickUp() { mouseState->RightUp(); };
 //Update Mouse
 void MouseObject::Update(float mouseX, float mouseY, float offSetX, float offSetY)
 {
-	MouseObject::x = mouseX;
-	MouseObject::y = mouseY;
+	float border = 2;
+	if (mouseX > WIDTH - border) mouseX = WIDTH - border;
+	if (mouseX < border) mouseX = border;
+	if (mouseY > HEIGHT - border) mouseY = HEIGHT - border;
+	if (mouseY < border) mouseY = border;
+
+	MouseObject::screenX = mouseX;
+	MouseObject::screenY = mouseY;
+	MouseObject::x = masterGame->GetMainCamera()->ScreenToViewX(mouseX);
+	MouseObject::y = masterGame->GetMainCamera()->ScreenToViewY(mouseY);
 
 	//Give mouse angle with the player
 	SetAngleToPlayer(GeneralFunctions::getAngle(masterGame->GetPlayer()->GetRenderObject()->GetX(),
-		masterGame->GetPlayer()->GetRenderObject()->GetY(), mouseX, mouseY));
-
+		masterGame->GetPlayer()->GetRenderObject()->GetY(), x, y));
 	//Give mouse distance with the player
 	SetDistToPlayer(GeneralFunctions::getDist(masterGame->GetPlayer()->GetRenderObject()->GetX(),
-		masterGame->GetPlayer()->GetRenderObject()->GetY(), mouseX, mouseY));
+		masterGame->GetPlayer()->GetRenderObject()->GetY(), x, y));
 
-	float border = 2;
-
-	if (x > WIDTH - border) x = WIDTH - border;
-	if (x < border) x = border;
-	if (y > HEIGHT - border) y = HEIGHT - border;
-	if (y < border) y = border;
-
-	MouseObject::mouseCursor->SetX(x);
-	MouseObject::mouseCursor->SetY(y);
+	MouseObject::mouseCursor->SetX(screenX);
+	MouseObject::mouseCursor->SetY(screenY);
 
 	if (GetTouchingObject() != NULL) mouseState->OnEnterObject(GetTouchingObject());
 	else if (GetTouchingObject() == NULL) mouseState->OnExitObject();
-
 	mouseState->UpdateState();
 };
-
 //Render Mouse
 void MouseObject::Render()
 {
+	//Mouse state overlays live in the world, the cursor itself on screen
+	masterGame->GetMainCamera()->UseWorldTransform();
 	mouseState->CustomBackRender(x, y);
+	masterGame->GetMainCamera()->UseScreenTransform();
 	mouseCursor->Render();
+	masterGame->GetMainCamera()->UseWorldTransform();
 	mouseState->CustomFrontRender(x, y);
+	masterGame->GetMainCamera()->UseScreenTransform();
 };

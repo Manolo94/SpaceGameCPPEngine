@@ -14,7 +14,10 @@ private:
 	//Master Game
 	Game* masterGame;
 
-	//X and Y
+	//Screen position (pixels) of the cursor
+	float screenX;
+	float screenY;
+	//View position (unzoomed pixels): what GameObjects and mouse states work with
 	float x;
 	float y;
 
@@ -37,6 +40,8 @@ public:
 	//Getters
 	float GetX() {return x;};
 	float GetY() { return y; };
+	float GetScreenX() { return screenX; };
+	float GetScreenY() { return screenY; };
 	float GetDistToPlayer(){ return DistToPlayer; };
 	float GetAngleToPlayer(){ return AngleToPlayer; };
 	RenderObject* GetCursor(){ return mouseCursor; };

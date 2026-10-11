@@ -39,7 +39,9 @@ const float mToPx = 50;
 	RESOURCE(CURSOR_ROCKET)  
 
 #define ITEM_RESOURCES(RESOURCE)        \
-	RESOURCE(ROCKET_ENGINE) 
+	RESOURCE(ROCKET_ENGINE)             \
+	RESOURCE(MODULE_HULL)               \
+	RESOURCE(MODULE_THRUSTER)
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -62,11 +64,24 @@ enum GAME_STATS {DEBUG_GAME, PLAYER_DISTANCE_TO_CENTER, PLAYER_ANGLE_TO_CENTER, 
 
 enum GAME_STATES {INITIAL, RESOURCE_COLLECTION, INROOM_RESEARCHLAB, INROOM_FORGE, INROOM_STORAGE, MAIN_MENU, GAME_STATES_TOTAL};
 
-enum GAME_OBJECT_TYPES {BUTTON, PLAYER_ASTRONAUT, SPACE_COLLECTIBLE, ROCKET};
+enum GAME_OBJECT_TYPES {BUTTON, PLAYER_ASTRONAUT, SPACE_COLLECTIBLE, ROCKET, SHIP_MODULE, SHIP};
 
 enum MOUSE_STATES {DEFAULT, COLLECT_PROPULSOR, COLLECT_PISTOL, COLLECT_PUT_ROCKET, MOUSE_STATES_TOTAL};
 
 enum LAYERS{NO_RENDER, BACKGROUND_LAYER, MAIN_LAYER, FRONT_LAYER, LAYERS_TOTAL};
+
+//Camera zoom (mouse wheel)
+const float ZOOM_MIN = 0.35f;
+const float ZOOM_MAX = 2.5f;
+const float ZOOM_STEP = 1.15f;   //zoom factor per wheel notch
+const float ZOOM_EASING = 0.2f;  //fraction of the remaining zoom applied each update
+
+//Ship building
+const float SHIP_CELL_SIZE = 1.2f;         //meters per module cell
+const float SHIP_THRUSTER_FORCE = 25.0f;   //newtons per thruster
+const float SHIP_SNAP_DISTANCE = 0.45f;    //max distance (in cells) from a free cell to snap into it
+const float BUILD_REACH = 7.0f;            //meters from the player the tractor beam reaches
+const float BOARD_DISTANCE = 2.5f;         //meters from a module the player can board a ship
 
 //Game Initialization
 const float PLAYER_INIT_X = 0;

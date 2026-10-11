@@ -49,7 +49,18 @@ public:
 	void EndState();
 	void RightDown();
 	void RightUp();
+	void LeftDown();
 	void OnEnterObject(GameObject *objectTouched);
+};
+
+//Mouse State. Dragging a ship module or ship with the tractor beam
+class Builder_Drag : public MouseState
+{
+public:
+	Builder_Drag(MouseObject* mouseObject);
+	void StartState();
+	void EndState();
+	void LeftUp();
 };
 
 //Mouse State. Put Rocket in collector mode

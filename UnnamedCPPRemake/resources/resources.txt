@@ -15,3 +15,5 @@ ANIM INDICATOR_FUEL        100  600  1  1  1 images/fuelIndicator.png
 ANIM CURSOR                 50   50  1  1  1 images/cursor.png
 ANIM CURSOR_ROCKET          50   50  1  1  1 images/rocketCursor.png
 ANIM ROCKET_ENGINE          55   35  1  1  1 images/rocketEngine.png
+ANIM MODULE_HULL          128  128  1  1  1 images/shipGraph/module_hull.png
+ANIM MODULE_THRUSTER      128  128  1  1  1 images/shipGraph/module_thruster.png
