@@ -10,8 +10,8 @@ private:
 	//Game Holder
 	Game* masterGame;
 
-	RenderObject *fireAnimation;
-	RenderObject *pistolAnimation;
+	RenderObject *thrustPlumes[2];
+	RenderObject *toolAnimation;
 
 	//Propulsor variables
 	bool propulsion;

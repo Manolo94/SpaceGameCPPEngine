@@ -3,6 +3,10 @@ ANIM FX_THRUST_FIRE         35   50 10  2  5 images/astronautGraph/fireAnim.png
 ANIM BTN_MAINHATCH          70  100  6  4  6 images/button_MainHatch.png
 ANIM ASTRONAUT_BODY         30   74  1  1  1 images/astronautGraph/astroUp.png
 ANIM ASTRONAUT_PISTOL       80   20  1  1  1 images/astronautGraph/pistol.png
+ANIM LUMA_IDLE             174  192  8 10  4 images/lumaGraph/luma_idle.png
+ANIM LUMA_THRUST           174  192  6  4  3 images/lumaGraph/luma_thrust.png
+ANIM FX_LUMA_PLUME          40  128  6  3  3 images/lumaGraph/luma_plume.png
+ANIM LUMA_TOOL             122   64  5  4  5 images/lumaGraph/luma_tool.png
 ANIM COLLECTIBLE_ASTEROID  420  420  1  1  1 images/SpaceCollectiblesGraph/asteroid.png
 ANIM COLLECTIBLE_COLUMN    643   79  1  1  1 images/SpaceCollectiblesGraph/column.png
 ANIM BACKGROUND_1         1000  750  1  1  1 images/outer-space.jpg

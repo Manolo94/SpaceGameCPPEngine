@@ -53,6 +53,9 @@ public:
 		Init(animation, x, y, rotation, width, height, masterGame, newLayer);
 	};
 
+	//Swap Animation in place, keeping size, layer and master RenderObject
+	void SetAnimation(Animation *animation);
+
 	//Hide/Unhide RenderObject
 	void Hide() {RenderObject::renderable = false;};
 	void Unhide() {RenderObject::renderable = true;};
