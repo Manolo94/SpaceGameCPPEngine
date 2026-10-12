@@ -32,7 +32,7 @@ private:
 	RenderObject* mouseCursor;
 
 	//Touching object
-	bool touching;
+	bool touching = false;
 	GameObject* touchObject;
 public:
 	MouseObject(Game* game);
