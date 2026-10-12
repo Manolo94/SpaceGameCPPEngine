@@ -2,7 +2,7 @@
 
 #include "RenderObject.h"
 #include "Globals.h"
-#include <allegro5\allegro_font.h>
+#include <allegro5/allegro_font.h>
 
 class Indicator : public RenderObject
 {

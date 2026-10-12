@@ -84,6 +84,33 @@ GameObject (base)
 
 ---
 
+## Building
+
+The build is defined in `CMakeLists.txt` (CMake 3.16+) and generates either a Visual Studio solution or a Linux/WSL build.
+
+**Windows (Visual Studio 2022)** — dependencies come from the NuGet packages listed in `UnnamedCPPRemake/packages.config`; CMake restores them into `packages/` if they are missing.
+
+```
+cmake -S . -B build/msvc -G "Visual Studio 17 2022" -A x64
+cmake --build build/msvc --config Debug
+```
+
+Open `build/msvc/UnnamedSpaceGame.sln` to debug, or open the repo folder directly in Visual Studio (it picks up CMake on its own).
+
+**Linux / WSL** — needs Allegro 5 and Box2D 2.3 from the system packages. If `libbox2d-dev` is not installed but `packages/` has been restored, Box2D is built from the NuGet package's sources.
+
+```
+sudo apt install build-essential cmake pkg-config liballegro5-dev liballegro-image5-dev \
+    liballegro-ttf5-dev liballegro-dialog5-dev libbox2d-dev
+cmake -S . -B build/linux
+cmake --build build/linux -j
+./build/linux/UnnamedSpaceGame
+```
+
+Under WSL the window appears through WSLg. On both platforms the `resources/` folder is copied next to the executable after each build.
+
+---
+
 ## Tech stack
 
 - **C++** — no engine, built from scratch

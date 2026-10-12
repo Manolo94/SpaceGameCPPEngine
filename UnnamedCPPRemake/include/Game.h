@@ -93,9 +93,9 @@ public:
 
 
 	//Initialization
-	void Game::Init(b2World *world);
+	void Init(b2World *world);
 
-	void Game::StartGame();
+	void StartGame();
 
 	//Methods
 	void ThrowSpaceCollectibles(ResourcesManager* RM, b2World *world, float focusX, float focusY);

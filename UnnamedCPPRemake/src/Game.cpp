@@ -2,8 +2,8 @@
 #include "Camera.h"
 #include "Player.h"
 
-#include <allegro5\allegro_native_dialog.h>
-#include "Box2D\Box2D.h"
+#include <allegro5/allegro_native_dialog.h>
+#include "Box2D/Box2D.h"
 
 //CLASS INITIATOR
 Game::Game()

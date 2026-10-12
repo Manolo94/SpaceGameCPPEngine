@@ -29,7 +29,7 @@ public:
 
 	void OnClick();
 
-	void TextButton::Render();
+	void Render();
 };
 
 //class ExitButton : public TextButton

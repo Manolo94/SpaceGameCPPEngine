@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "ResourcesManager.h"
 
-#include <windows.h>
 #include <cstdio>
 
 Animation::Animation(const char* filename, 

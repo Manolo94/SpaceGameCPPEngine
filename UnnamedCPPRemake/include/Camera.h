@@ -2,8 +2,8 @@
 
 #include <list>
 #include <vector>
-#include <allegro5\allegro5.h>
-#include <Box2D\Box2D.h>
+#include <allegro5/allegro5.h>
+#include <Box2D/Box2D.h>
 
 #include "GameObject.h"
 #include "Background.h"
@@ -52,7 +52,7 @@ public:
 	b2World* focusedWorld;
 
 	//Default Constructor
-	Camera::Camera();
+	Camera();
 
 	//Initializer
 	void Init(float initFX, float initFY, b2World* world, Game* game);

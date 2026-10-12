@@ -44,12 +44,12 @@ class Collector_Default : public MouseState
 {
 public:
 	Collector_Default(MouseObject* mouseObject);
-	void Collector_Default::StartState();
-	void Collector_Default::UpdateState();
-	void Collector_Default::EndState();
-	void Collector_Default::RightDown();
-	void Collector_Default::RightUp();
-	void Collector_Default::OnEnterObject(GameObject *objectTouched);
+	void StartState();
+	void UpdateState();
+	void EndState();
+	void RightDown();
+	void RightUp();
+	void OnEnterObject(GameObject *objectTouched);
 };
 
 //Mouse State. Put Rocket in collector mode
@@ -59,12 +59,12 @@ public:
 	int cooldownCounter;
 
 	Collector_PutRocket(MouseObject* mouseObject);
-	void Collector_PutRocket::StartState();
-	void Collector_PutRocket::UpdateState();
-	void Collector_PutRocket::CustomBackRender(float x, float y);
-	void Collector_PutRocket::LeftDown();
-	void Collector_PutRocket::OnEnterObject(GameObject *objectTouched);
-	void Collector_PutRocket::OnExitObject();
+	void StartState();
+	void UpdateState();
+	void CustomBackRender(float x, float y);
+	void LeftDown();
+	void OnEnterObject(GameObject *objectTouched);
+	void OnExitObject();
 };
 
 //Mouse State. Select Direction of the Rocket
@@ -79,10 +79,10 @@ private:
 	GameObject *aimedResource;
 public:
 	Collector_RocketAngle(MouseObject* mouseObject);
-	void Collector_RocketAngle::StartState();
-	void Collector_RocketAngle::UpdateState();
-	void Collector_RocketAngle::LeftUp();
+	void StartState();
+	void UpdateState();
+	void LeftUp();
 
-	void Collector_RocketAngle::CustomFrontRender(float x, float y);
+	void CustomFrontRender(float x, float y);
 };
 

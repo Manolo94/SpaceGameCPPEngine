@@ -23,7 +23,7 @@ protected:
 	//Rocket on
 	bool on;
 public:
-	CollectorRocket::CollectorRocket();
+	CollectorRocket();
 
 	void Init(float x, float y, float angle, GameObject *attachedObject, b2World *world, Game *game);
 

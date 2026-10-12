@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Globals.h"
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 #include "AllegroBox2DDebugDraw.h"
 
 class SimpleBox2D

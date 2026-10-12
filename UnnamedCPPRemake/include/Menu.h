@@ -19,7 +19,7 @@ public:
 
 	Menu();
 
-	void Menu::Init(float xPosition, float yPosition, float width, float height, char alignment, b2World* world, Game* game);
+	void Init(float xPosition, float yPosition, float width, float height, char alignment, b2World* world, Game* game);
 
 	void virtual Render(bool debug = false, bool frozenFrame = false);
 
@@ -31,5 +31,5 @@ class MainMenu : public Menu
 private:
 
 public:
-	MainMenu::MainMenu(b2World* world, Game* game);
+	MainMenu(b2World* world, Game* game);
 };

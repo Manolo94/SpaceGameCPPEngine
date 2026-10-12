@@ -13,7 +13,11 @@ const float mToPx = 50;
     RESOURCE(NULL_ANIM)                 \
     RESOURCE(ASTRONAUT_BODY)            \
     RESOURCE(FX_THRUST_FIRE)            \
-    RESOURCE(ASTRONAUT_PISTOL)     
+    RESOURCE(ASTRONAUT_PISTOL)          \
+    RESOURCE(LUMA_IDLE)                 \
+    RESOURCE(LUMA_THRUST)               \
+    RESOURCE(FX_LUMA_PLUME)             \
+    RESOURCE(LUMA_TOOL)
 
 #define COLLECTIBLE_RESOURCES(RESOURCE) \
     RESOURCE(COLLECTIBLE_ASTEROID)      \

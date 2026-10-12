@@ -45,6 +45,20 @@ void RenderObject::Init(Animation *animation, int x, int y, float rotation, floa
 	RenderObject::masterGame->GetMainCamera()->AddToLayer(this, renderLayer);
 };
 
+void RenderObject::SetAnimation(Animation *animation)
+{
+	if (animation == NULL || animation == RenderObject::animation)
+		return;
+
+	RenderObject::animation = animation;
+	RenderObject::curFrame = 0;
+	RenderObject::frameCount = 0;
+	RenderObject::scaleX = (RenderObject::width) / (animation->frameWidth);
+	RenderObject::scaleY = (RenderObject::height) / (animation->frameHeight);
+	RenderObject::rotationCenterX = animation->frameWidth / 2;
+	RenderObject::rotationCenterY = animation->frameHeight / 2;
+};
+
 void RenderObject::SetMasterRenderObject(RenderObject *masterRenderObject)
 {
 	RenderObject::masterRenderObject = masterRenderObject;

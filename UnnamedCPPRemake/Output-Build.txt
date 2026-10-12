@@ -1,6 +1,0 @@
-﻿1>------ Build started: Project: Unnamed CPP Remake, Configuration: Release Win32 ------
-1>  Astronaut.cpp
-1>  Generating code
-1>  Finished generating code
-1>  Allegro Empty Project.vcxproj -> C:\Users\Manuel\Documents\Visual Studio 2013\Projects\Unnamed Cpp Remake\Release\Unnamed CPP Remake.exe
-========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========

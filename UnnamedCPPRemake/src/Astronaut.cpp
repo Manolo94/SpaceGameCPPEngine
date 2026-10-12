@@ -4,26 +4,51 @@
 Astronaut::Astronaut(float initX, float initY, float initVelX, float initVelY, b2World *world, Game *game)
 {
 	masterGame = game;
+	propulsion = false;
+	pulse = false;
 
-	Astronaut::Init(game->GetResourcesManager()->retrieveResource_ANIM(ASTRONAUT_BODY), initX, initY, 
-		1.7*mToPx*30/74, 1.7*mToPx, world, game, MAIN_LAYER);
+	ResourcesManager *resources = game->GetResourcesManager();
+	Animation *idleAnim = resources->retrieveResource_ANIM(LUMA_IDLE);
+	Animation *plumeAnim = resources->retrieveResource_ANIM(FX_LUMA_PLUME);
+	Animation *toolAnim = resources->retrieveResource_ANIM(LUMA_TOOL);
+
+	//LUMA-7 frames carry some padding around the robot, so the frame is a bit taller than the 1.7m body
+	float bodyHeight = 1.8*mToPx;
+	float bodyWidth = bodyHeight*idleAnim->frameWidth/idleAnim->frameHeight;
+	//Children are drawn with their size multiplied by the body's scale, so size them in body-frame units
+	float bodyScale = bodyHeight/idleAnim->frameHeight;
+
+	//Backpack thruster plumes. Created before the body so they render behind it.
+	float plumeHeight = bodyHeight*0.75;
+	float plumeWidth = plumeHeight*plumeAnim->frameWidth/plumeAnim->frameHeight;
+	for (int i = 0; i < 2; i++)
+	{
+		Astronaut::thrustPlumes[i] = new RenderObject();
+		Astronaut::thrustPlumes[i]->Init(plumeAnim, bodyWidth*(i == 0 ? -0.12 : 0.12), bodyHeight*0.02, 0,
+			plumeWidth/bodyScale, plumeHeight/bodyScale, game, MAIN_LAYER);
+		//Anchor the plume at its nozzle end
+		Astronaut::thrustPlumes[i]->SetRotationCenter(plumeAnim->frameWidth / 2, 0);
+		Astronaut::thrustPlumes[i]->ToFrame(i*3);
+		Astronaut::thrustPlumes[i]->Hide();
+	}
+
+	Astronaut::Init(idleAnim, initX, initY, bodyWidth, bodyHeight, world, game, MAIN_LAYER);
 	Astronaut::propulsionPoint = new b2Vec2(0, -1);
 	Astronaut::propulsionVector = new b2Vec2(5, 0);
 	Astronaut::SetType(PLAYER_ASTRONAUT);
 
-	Astronaut::fireAnimation = new RenderObject();
-	Astronaut::fireAnimation->Init(game->GetResourcesManager()->retrieveResource_ANIM(FX_THRUST_FIRE), 
-		renderObject->GetWidth()*(-0.15), renderObject->GetHeight()*0.4, 0, renderObject->GetWidth()*23/30, 
-		renderObject->GetHeight()*50/74, game, MAIN_LAYER);
-	Astronaut::fireAnimation->Hide();
-	Astronaut::fireAnimation->SetMasterRenderObject(GameObject::GetRenderObject());
+	for (int i = 0; i < 2; i++)
+		Astronaut::thrustPlumes[i]->SetMasterRenderObject(GameObject::GetRenderObject());
 
-	Astronaut::pistolAnimation = new RenderObject();
-	Astronaut::pistolAnimation->Init(game->GetResourcesManager()->retrieveResource_ANIM(ASTRONAUT_PISTOL), 0, -5, 0, 
-		game->GetResourcesManager()->retrieveResource_ANIM(ASTRONAUT_PISTOL)->frameWidth*3/4, 
-		game->GetResourcesManager()->retrieveResource_ANIM(ASTRONAUT_PISTOL)->frameHeight, game, MAIN_LAYER);
-	Astronaut::pistolAnimation->SetRotationCenter(0, pistolAnimation->GetHeight() / 2);
-	Astronaut::pistolAnimation->SetMasterRenderObject(GameObject::GetRenderObject());
+	//Collector emitter, pivots at its back end and aims at the mouse
+	float toolWidth = bodyWidth*0.6;
+	Astronaut::toolAnimation = new RenderObject();
+	Astronaut::toolAnimation->Init(toolAnim, 0, -bodyHeight*0.12, 0,
+		toolWidth/bodyScale, toolWidth/bodyScale*toolAnim->frameHeight/toolAnim->frameWidth, game, MAIN_LAYER);
+	Astronaut::toolAnimation->SetRotationCenter(0, toolAnim->frameHeight / 2);
+	Astronaut::toolAnimation->ToFrame(0, 0);
+	Astronaut::toolAnimation->Hide();
+	Astronaut::toolAnimation->SetMasterRenderObject(GameObject::GetRenderObject());
 
 	//PHYSICS OBJECT SETUP
 
@@ -55,23 +80,30 @@ Astronaut::Astronaut(float initX, float initY, float initVelX, float initVelY, b
 //Propulsor
 void Astronaut::StartPropulsor() 
 {
+	if (propulsion) return;
 	propulsion = true;
-	Astronaut::fireAnimation->Unhide();
+	renderObject->SetAnimation(masterGame->GetResourcesManager()->retrieveResource_ANIM(LUMA_THRUST));
+	for (int i = 0; i < 2; i++)
+		Astronaut::thrustPlumes[i]->Unhide();
 };
 void Astronaut::StopPropulsor() 
 {
 	propulsion = false;
-	Astronaut::fireAnimation->Hide();
+	renderObject->SetAnimation(masterGame->GetResourcesManager()->retrieveResource_ANIM(LUMA_IDLE));
+	for (int i = 0; i < 2; i++)
+		Astronaut::thrustPlumes[i]->Hide();
 };
 
 //Pulse
 void Astronaut::StartPulse()
 {
 	pulse = true;
+	Astronaut::toolAnimation->ToFrame(1, 1);
 };
 void Astronaut::StopPulse()
 {
 	pulse = false;
+	Astronaut::toolAnimation->ToFrame(0, 0);
 };
 
 void Astronaut::Update(float cameraXOffset, float cameraYOffset, bool mouseIntegration, float mouseX, float mouseY)
@@ -109,14 +141,14 @@ void Astronaut::Update(float cameraXOffset, float cameraYOffset, bool mouseInteg
 		masterGame->SetGameStat(masterGame->GetGameStat(PLAYER_FUEL)-0.001, PLAYER_FUEL);
 	}
 
-	//Pistol animation conditions
+	//Collector tool animation conditions
 	if (masterGame->GetMouse()->GetTouchingObject() != NULL 
 		&& masterGame->GetMouse()->GetTouchingObject()->GetType() == GAME_OBJECT_TYPES::SPACE_COLLECTIBLE)
 	{
-		pistolAnimation->Unhide();
-		pistolAnimation->SetRotation(masterGame->GetMouse()->GetAngleToPlayer()+3.14);
+		toolAnimation->Unhide();
+		toolAnimation->SetRotation(masterGame->GetMouse()->GetAngleToPlayer()+3.14);
 	}
-	else pistolAnimation->Hide();
+	else toolAnimation->Hide();
 
 	//Pulse animation
 	if (pulse && masterGame->GetMouse()->GetTouchingObject() != NULL)

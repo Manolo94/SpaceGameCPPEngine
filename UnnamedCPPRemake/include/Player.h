@@ -7,10 +7,10 @@ class Player : public GameObject
 public:
 	//All functions related to the player specific Class
 	//Propulsor
-	virtual void Player::StartPropulsor() = 0;
-	virtual void Player::StopPropulsor() = 0;
+	virtual void StartPropulsor() = 0;
+	virtual void StopPropulsor() = 0;
 
 	//Pulse
-	virtual void Player::StartPulse() = 0;
-	virtual void Player::StopPulse() = 0;
+	virtual void StartPulse() = 0;
+	virtual void StopPulse() = 0;
 };

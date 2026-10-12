@@ -7,7 +7,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 #include "SimpleBox2D.h"
 
 #include "Game.h"
@@ -61,6 +61,11 @@ int main(int argc, char **argv)
 	if (!al_init())										//initialize Allegro
 		return -1;
 
+	//Resources are copied next to the executable, so load them from there whatever the launch directory
+	ALLEGRO_PATH *exePath = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
+	al_change_directory(al_path_cstr(exePath, ALLEGRO_NATIVE_PATH_SEP));
+	al_destroy_path(exePath);
+
 	display = al_create_display(WIDTH, HEIGHT);			//create our display object
 
 	if (!display) //test display object
@@ -106,11 +111,11 @@ int main(int argc, char **argv)
 	};
 
 	//Creating Indicators
-	IndicatorCompass(0.10*WIDTH, 0.9*HEIGHT, 0, &thisGame);
-	IndicatorFuel(0.95*WIDTH, 0.5*HEIGHT, 0, &thisGame);
+	new IndicatorCompass(0.10*WIDTH, 0.9*HEIGHT, 0, &thisGame);
+	new IndicatorFuel(0.95*WIDTH, 0.5*HEIGHT, 0, &thisGame);
 
 	//Creating Background
-	Background(thisGame.GetResourcesManager()->retrieveResource_ANIM(BACKGROUND_1), 0, 0, 0, 1000, 1000, 0.09, thisGame.GetMainCamera());
+	new Background(thisGame.GetResourcesManager()->retrieveResource_ANIM(BACKGROUND_1), 0, 0, 0, 1000, 1000, 0.09, thisGame.GetMainCamera());
 	//thisGame.GetMainCamera()->AddBackground(new Background(thisGame.GetResourcesManager()->retrieveResource_ANIM_piece(BACKGROUND_MAP, 0, 1000, 0, 500), 600, 400, 0, 1000, 500, 1, false));
 	//mainCamera->AddBackground(new Background(bg2Anim, 0, 0, 0, 3000, 3000, 1.0));
 
